@@ -27,10 +27,12 @@ def neighbor_no_repeat(x):
         else:
             msg='合规序列success'
             # 存在合规序列，则找到合规序列
-            stop_status=False #  合规序列全局状态，是否生成了最终的合规序列，初始是False
-            while stop_status==False:
-                numcur=numx.pop(0)  # 从当前出现最多的字符开始间隔填充， numcur: ('a',5) ,  numx:[('b',3),('c',3)('d',1)]
-                current_str=[numcur[0]]*numcur[1] # ['a','a','a','a','a']
+            while len(numx)>0:
+                if len(rst)==0:
+                    numcur=numx.pop(0)  # 从当前出现最多的字符开始间隔填充， numcur: ('a',5) ,  numx:[('b',3),('c',3)('d',1)]
+                    current_str=[numcur[0]]*numcur[1] # ['a','a','a','a','a']
+                else:
+                    current_str=rst
                 most_insert_len=len(current_str)*2-2  # 最大可填充的index位置 ，此例第一次a的间隔填充最大位置为 5+4-1 即 5*2-2=8
                 baseidx=0;baseidx_impr = 0 # 第一个填充的字符的初始位，默认0，若第一个字符没填充满a的间隔，会更新baseidx_impr到对应的位置
                 insert_status=True # 当前待填充的填充状态，默认为True，即 仍未完成当前最多字符的间隔填充。
@@ -44,22 +46,10 @@ def neighbor_no_repeat(x):
                             current_str.insert(baseidx+cover_idx*2+1,cover_strx) # ['a','b','a','b','a','b','a','c','a']
                             baseidx_impr=baseidx+cover_idx*2+1+1  # 注意，本例中，对a序列填充b后，c的填充初始位需要增加6个
                         else:
-                            numx.append((cover_strx,len(cover_str)-cover_idx)) # 多的填充字符 需要保留多余的那部分 本例是保留 ('c',2)
-                            numx.sort(key=lambda y:y[1])
-                            numx.reverse()
-                            insert_status=False # 当前待填充的状态：填充完成
+                            numx.append((cover_strx,len(cover_str)-cover_idx)) # 多的填充字符 需要保留多余的那部分 本例是保留 ('c',2),为了避免下一轮填充时立即相遇，保留值要追加到尾部供最后填充
+                            insert_status=False # 当前待填充的状态：填满
                             break # 跳出补位字符填充
-                rst.extend(current_str)# 填充的部分追加到结果中，开始下一轮识别和填充
-                if len(numx)>0:
-                    max_cover=sum(dict(numx).values())-numx[0][1]
-                    if numx[0][1]-1>max_cover:
-                        msg='无法生成合规序列'
-                        stop_status=True # 停止
-                        rst=[]
-                    else:
-                        stop_status=False # 继续
-                else:
-                    stop_status=True # 停止
+                rst=current_str# 填充的部分追加到结果中，开始下一轮识别和填充
     print(msg)
     return ''.join(rst)
 
@@ -73,6 +63,17 @@ if __name__=='__main__':
     x='aaaabc'
     new_x=neighbor_no_repeat(x=x)
     print(x,'=>\t',new_x)
+
+    print()
+    x='好好的说说话'
+    new_x=neighbor_no_repeat(x=x)
+    print(x,'=>\t',new_x)
+
+    print()
+    x='aaaaaabbbbccccd'
+    new_x=neighbor_no_repeat(x=x)
+    print(x,'=>\t',new_x)
+
 
 
 
