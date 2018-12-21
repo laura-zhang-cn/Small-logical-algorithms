@@ -44,7 +44,7 @@ def neighbor_no_repeat(x):
                         if baseidx+cover_idx*2+1<=most_insert_len:
                             # 没超出最多可填充位，则依次按位填充
                             current_str.insert(baseidx+cover_idx*2+1,cover_strx) # ['a','b','a','b','a','b','a','c','a']
-                            baseidx_impr=baseidx+cover_idx*2+1+1  # 注意，本例中，对a序列填充b后，c的填充初始位需要增加6个
+                            baseidx_impr=cover_idx*2+1+1  # 注意，本例中，对a序列填充b后，c的填充初始位需要增加6个
                         else:
                             numx.append((cover_strx,len(cover_str)-cover_idx)) # 多的填充字符 需要保留多余的那部分 本例是保留 ('c',2),为了避免下一轮填充时立即相遇，保留值要追加到尾部供最后填充
                             insert_status=False # 当前待填充的状态：填满
