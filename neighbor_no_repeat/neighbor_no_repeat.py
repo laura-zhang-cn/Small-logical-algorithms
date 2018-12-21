@@ -74,7 +74,15 @@ if __name__=='__main__':
     new_x=neighbor_no_repeat(x=x)
     print(x,'=>\t',new_x)
 
+    print()
+    x='aaaabcdkk'
+    new_x=neighbor_no_repeat(x=x)
+    print(x,'=>\t',new_x)
 
+    print()
+    x='abcdkkkk'
+    new_x=neighbor_no_repeat(x=x)
+    print(x,'=>\t',new_x)
 
 
 
